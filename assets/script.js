@@ -74,12 +74,15 @@ class SLink {
     }
 
     isValidUrl(string) {
-        try {
-            new URL(string);
-            return true;
-        } catch (_) {
+        if (!string || string.length === 0) {
             return false;
         }
+        
+        // 简单的URL格式验证，允许不带协议的域名
+        const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+        const domainPattern = /^[\da-z\.-]+\.([a-z\.]{2,6})$/i;
+        
+        return urlPattern.test(string) || domainPattern.test(string);
     }
 
     setLoading(loading) {
