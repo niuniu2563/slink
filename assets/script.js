@@ -78,11 +78,19 @@ class SLink {
             return false;
         }
         
-        // 简单的URL格式验证，允许不带协议的域名
-        const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
-        const domainPattern = /^[\da-z\.-]+\.([a-z\.]{2,6})$/i;
+        // 规范化URL：如果没有协议，自动添加https://（与后端逻辑保持一致）
+        let normalizedUrl = string.trim();
+        if (!/^https?:\/\//i.test(normalizedUrl)) {
+            normalizedUrl = 'https://' + normalizedUrl;
+        }
         
-        return urlPattern.test(string) || domainPattern.test(string);
+        // 使用浏览器原生URL构造函数验证
+        try {
+            new URL(normalizedUrl);
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     setLoading(loading) {
