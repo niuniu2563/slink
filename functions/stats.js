@@ -1,44 +1,30 @@
 export async function onRequestGet(context) {
     const { request, env } = context;
-    const url = new URL(request.url);
-    const slug = url.searchParams.get('slug');
+    const slug = new URL(request.url).searchParams.get('slug');
 
-    if (!slug) {
-        return new Response(JSON.stringify({ error: '缺少slug参数' }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }
+    if (!slug) return jsonResponse({ error: '缺少slug参数' }, 400);
 
     try {
-        // 从KV获取链接数据
         const linkDataStr = await env.SLINK_KV.get(`url:${slug}`);
-        
-        if (!linkDataStr) {
-            return new Response(JSON.stringify({ error: '短链不存在' }), {
-                status: 404,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+        if (!linkDataStr) return jsonResponse({ error: '短链不存在' }, 404);
 
         const linkData = JSON.parse(linkDataStr);
-
-        return new Response(JSON.stringify({
+        return jsonResponse({
             success: true,
-            slug: slug,
+            slug,
             originalUrl: linkData.originalUrl,
             createdAt: linkData.createdAt,
             clickCount: linkData.clickCount || 0,
             lastAccessed: linkData.lastAccessed
-        }), {
-            headers: { 'Content-Type': 'application/json' }
         });
-
     } catch (error) {
-        console.error('Stats API error:', error);
-        return new Response(JSON.stringify({ error: '获取统计信息失败' }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
+        return jsonResponse({ error: '获取统计信息失败' }, 500);
     }
+}
+
+function jsonResponse(data, status = 200) {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: { 'Content-Type': 'application/json' }
+    });
 }

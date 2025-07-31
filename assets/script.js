@@ -73,23 +73,14 @@ class SLink {
 
     setLoading(loading) {
         this.shortenBtn.disabled = loading;
-        if (loading) {
-            this.btnText.style.display = 'none';
-            this.loading.style.display = 'inline';
-        } else {
-            this.btnText.style.display = 'inline';
-            this.loading.style.display = 'none';
-        }
+        this.btnText.style.display = loading ? 'none' : 'inline';
+        this.loading.style.display = loading ? 'inline' : 'none';
     }
 
     showResult(data) {
-        const baseUrl = window.location.origin;
-        const shortLink = `${baseUrl}/${data.slug}`;
-        
-        this.shortUrl.value = shortLink;
+        this.shortUrl.value = `${window.location.origin}/${data.slug}`;
         this.originalUrlDisplay.textContent = data.originalUrl;
         this.createdTime.textContent = new Date(data.createdAt).toLocaleString('zh-CN');
-        
         this.result.style.display = 'block';
         this.result.scrollIntoView({ behavior: 'smooth' });
     }
