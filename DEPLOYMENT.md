@@ -81,14 +81,26 @@ preview_id = "z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4"  # 替换为你的预览KV命名
 3. 点击 "Create a project"
 4. 选择 "Connect to Git"
 5. 选择你的GitHub仓库 `niuniu2563/slink`
-6. 配置构建设置：
+6. **重要：配置构建设置**：
    - Framework preset: `None`
-   - Build command: 留空
+   - Build command: **留空**（非常重要！）
    - Build output directory: `public`
-7. 在 "Environment variables" 中添加KV绑定：
+   - Root directory: **留空**（使用根目录）
+7. 在项目设置的 "Functions" 标签页中添加KV绑定：
+   - 进入 "Settings" → "Functions"
+   - 在 "KV namespace bindings" 部分点击 "Add binding"
    - Variable name: `SLINK_KV`
-   - Value: 你的KV命名空间ID
+   - KV namespace: 选择你创建的KV命名空间
 8. 点击 "Save and Deploy"
+
+**静态文件404问题解决方案：**
+
+如果遇到CSS和JS文件404错误，这通常是Cloudflare Pages构建配置问题：
+
+1. **检查构建输出目录**：确保设置为 `public`
+2. **确保构建命令为空**：不要添加任何构建命令
+3. **检查根目录设置**：应该为空（使用仓库根目录）
+4. **临时解决方案**：如果问题持续，可以访问 `/index-inline.html` 使用内联版本
 
 **方法2：通过Wrangler CLI**
 
