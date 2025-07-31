@@ -8,6 +8,69 @@ export async function onRequest(context) {
     }
 
     try {
+        // 检查KV是否可用
+        if (!env.SLINK_KV) {
+            // KV未配置，返回测试页面
+            return new Response(`
+                <!DOCTYPE html>
+                <html lang="zh-CN">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>测试模式 - SLink</title>
+                    <style>
+                        body {
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 100vh;
+                            margin: 0;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            text-align: center;
+                        }
+                        .container {
+                            max-width: 500px;
+                            padding: 40px;
+                        }
+                        h1 {
+                            font-size: 3rem;
+                            margin-bottom: 20px;
+                        }
+                        p {
+                            font-size: 1.2rem;
+                            margin-bottom: 30px;
+                            opacity: 0.9;
+                        }
+                        a {
+                            color: white;
+                            text-decoration: none;
+                            background: rgba(255,255,255,0.2);
+                            padding: 12px 24px;
+                            border-radius: 6px;
+                            transition: background 0.3s;
+                        }
+                        a:hover {
+                            background: rgba(255,255,255,0.3);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>🧪 测试模式</h1>
+                        <p>KV存储未配置，短链重定向功能暂不可用</p>
+                        <p>短链代码: <strong>${slug}</strong></p>
+                        <a href="/">返回首页</a>
+                    </div>
+                </body>
+                </html>
+            `, {
+                status: 200,
+                headers: { 'Content-Type': 'text/html; charset=utf-8' }
+            });
+        }
+
         // 从KV获取链接数据
         const linkDataStr = await env.SLINK_KV.get(`url:${slug}`);
         

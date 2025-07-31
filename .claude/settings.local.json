@@ -28,7 +28,8 @@
       "Bash(mv functions/api/* functions/)",
       "Bash(rmdir functions/api)",
       "Bash(rmdir public)",
-      "Bash(rm README.md DEPLOYMENT.md setup-kv.sh package.json)"
+      "Bash(rm README.md DEPLOYMENT.md setup-kv.sh package.json)",
+      "Bash(git commit -m \"Restructure project: move HTML to root, assets to assets/, clean up unnecessary files\")"
     ],
     "deny": []
   }

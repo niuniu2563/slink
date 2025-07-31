@@ -2,6 +2,14 @@ export async function onRequestPost(context) {
     const { request, env } = context;
     
     try {
+        // 检查KV绑定
+        if (!env.SLINK_KV) {
+            return new Response(JSON.stringify({ error: 'KV存储未配置，请联系管理员' }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         const body = await request.json();
         const { url, customSlug } = body;
 

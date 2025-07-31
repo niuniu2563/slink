@@ -37,7 +37,7 @@ class SLink {
         this.hideResult();
 
         try {
-            const response = await fetch('/shorten', {
+            const response = await fetch('/shorten-simple', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
