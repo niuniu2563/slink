@@ -15,6 +15,12 @@ export async function onRequest(context) {
 
         const linkData = JSON.parse(linkDataStr);
         
+        // 确保URL格式正确
+        let redirectUrl = linkData.originalUrl;
+        if (!/^https?:\/\//i.test(redirectUrl)) {
+            redirectUrl = 'https://' + redirectUrl;
+        }
+        
         // 异步更新访问统计
         context.waitUntil(
             env.SLINK_KV.put(`url:${slug}`, JSON.stringify({
@@ -26,7 +32,7 @@ export async function onRequest(context) {
             })
         );
 
-        return Response.redirect(linkData.originalUrl, 302);
+        return Response.redirect(redirectUrl, 302);
 
     } catch (error) {
         console.error('Redirect error:', error);

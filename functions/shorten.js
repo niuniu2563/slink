@@ -21,8 +21,15 @@ export async function onRequestPost(context) {
             return jsonResponse({ error: '缺少必需的URL参数' }, 400);
         }
 
+        // 规范化URL：如果没有协议，自动添加https://
+        let normalizedUrl = url.trim();
+        if (!/^https?:\/\//i.test(normalizedUrl)) {
+            normalizedUrl = 'https://' + normalizedUrl;
+        }
+
+        // 验证URL格式
         try {
-            new URL(url);
+            new URL(normalizedUrl);
         } catch {
             return jsonResponse({ error: '无效的URL格式' }, 400);
         }
@@ -48,7 +55,7 @@ export async function onRequestPost(context) {
         }
 
         const linkData = {
-            originalUrl: url,
+            originalUrl: normalizedUrl,
             slug,
             createdAt: new Date().toISOString(),
             clickCount: 0,
@@ -82,7 +89,7 @@ export async function onRequestPost(context) {
         return jsonResponse({
             success: true,
             slug,
-            originalUrl: url,
+            originalUrl: normalizedUrl,
             createdAt: linkData.createdAt,
             shortUrl: `${new URL(request.url).origin}/${slug}`
         }, 201);
