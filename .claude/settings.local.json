@@ -37,7 +37,8 @@
       "Bash(rm index-inline.html)",
       "Bash(git commit -m \"Clean up and optimize code: remove unused files, simplify functions, reduce redundancy\")",
       "Bash(mv /opt/codeserver/slink/functions/index.js /opt/codeserver/slink/functions/core.js)",
-      "Bash(rm /opt/codeserver/slink/functions/shorten.js /opt/codeserver/slink/functions/stats.js /opt/codeserver/slink/functions/[slug].js)"
+      "Bash(rm /opt/codeserver/slink/functions/shorten.js /opt/codeserver/slink/functions/stats.js /opt/codeserver/slink/functions/[slug].js)",
+      "Bash(git commit -m \"Merge all backend functions into single core.js file with KV storage limit handling\")"
     ],
     "deny": []
   }
