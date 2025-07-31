@@ -40,7 +40,9 @@
       "Bash(rm /opt/codeserver/slink/functions/shorten.js /opt/codeserver/slink/functions/stats.js /opt/codeserver/slink/functions/[slug].js)",
       "Bash(git commit -m \"Merge all backend functions into single core.js file with KV storage limit handling\")",
       "Bash(git commit -m \"Add automatic KV cleanup: remove oldest data when storage is full\")",
-      "Bash(git commit -m \"Update automatic cleanup system\")"
+      "Bash(git commit -m \"Update automatic cleanup system\")",
+      "Bash(rm /opt/codeserver/slink/functions/core.js)",
+      "Bash(git commit -m \"Fix JSON parsing error: split functions and add better error handling\")"
     ],
     "deny": []
   }

@@ -48,7 +48,18 @@ class SLink {
                 })
             });
 
-            const data = await response.json();
+            // 检查响应是否有内容
+            const responseText = await response.text();
+            if (!responseText) {
+                throw new Error('服务器响应为空');
+            }
+
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error('服务器响应格式错误');
+            }
 
             if (!response.ok) {
                 throw new Error(data.error || '生成短链失败');
