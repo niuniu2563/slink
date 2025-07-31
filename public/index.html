@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLink - 短链生成服务</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 SLink</h1>
+            <p>简单、快速的短链生成服务</p>
+        </header>
+
+        <main>
+            <form id="shortenForm" class="shorten-form">
+                <div class="input-group">
+                    <input 
+                        type="url" 
+                        id="originalUrl" 
+                        placeholder="输入要缩短的网址..." 
+                        required
+                    >
+                    <input 
+                        type="text" 
+                        id="customSlug" 
+                        placeholder="自定义短码 (可选)"
+                        pattern="[a-zA-Z0-9_-]+"
+                        title="只能包含字母、数字、下划线和连字符"
+                    >
+                    <button type="submit" id="shortenBtn">
+                        <span class="btn-text">生成短链</span>
+                        <span class="loading" style="display: none;">生成中...</span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="result" class="result" style="display: none;">
+                <div class="result-item">
+                    <label>短链地址:</label>
+                    <div class="url-display">
+                        <input type="text" id="shortUrl" readonly>
+                        <button id="copyBtn" class="copy-btn">复制</button>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <label>原始地址:</label>
+                    <div class="original-url" id="originalUrlDisplay"></div>
+                </div>
+                <div class="result-item">
+                    <label>创建时间:</label>
+                    <div class="created-time" id="createdTime"></div>
+                </div>
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>由 Cloudflare Pages & Functions 强力驱动</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
