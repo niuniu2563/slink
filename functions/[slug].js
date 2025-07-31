@@ -15,14 +15,13 @@ export async function onRequest(context) {
 
         const linkData = JSON.parse(linkDataStr);
         
-        // 异步更新访问统计，忽略可能的存储错误
+        // 异步更新访问统计
         context.waitUntil(
             env.SLINK_KV.put(`url:${slug}`, JSON.stringify({
                 ...linkData,
                 clickCount: (linkData.clickCount || 0) + 1,
                 lastAccessed: new Date().toISOString()
             })).catch(() => {
-                // 忽略统计更新失败（可能是存储空间满了）
                 console.warn(`Failed to update stats for ${slug}`);
             })
         );

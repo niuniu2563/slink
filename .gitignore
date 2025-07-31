@@ -1,0 +1,16 @@
+# Claude IDE files
+.claude/
+
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
