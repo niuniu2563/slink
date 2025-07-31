@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "wrangler pages dev public --compatibility-date=2024-01-01",
     "deploy": "wrangler pages deploy public",
-    "preview": "wrangler pages dev public --compatibility-date=2024-01-01 --local"
+    "preview": "wrangler pages dev public --compatibility-date=2024-01-01 --local",
+    "serve": "python3 -m http.server 8000 --directory public"
   },
   "keywords": [
     "url-shortener",

@@ -3,7 +3,15 @@
     "allow": [
       "Bash(mkdir -p public functions/api)",
       "Bash(git init)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Complete SLink URL shortener service\n\n- Add responsive web interface for URL shortening\n- Implement Cloudflare Functions for API endpoints\n- Add URL shortening with custom slug support\n- Implement redirect functionality with click tracking\n- Configure Cloudflare KV storage integration\n- Add basic analytics and statistics\n- Include deployment configuration for Cloudflare Pages\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git config user.name \"niuniu2563\")",
+      "Bash(git config user.email \"niuniu2563@canghai.org\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Complete SLink URL shortener service\n\n- Add responsive web interface for URL shortening\n- Implement Cloudflare Functions for API endpoints\n- Add URL shortening with custom slug support\n- Implement redirect functionality with click tracking\n- Configure Cloudflare KV storage integration\n- Add basic analytics and statistics\n- Include deployment configuration for Cloudflare Pages\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(gh repo create slink --public --description \"基于Cloudflare Pages和Functions的短链生成服务\" --source=. --push)",
+      "Bash(git remote add origin https://github.com/niuniu2563/slink.git)",
+      "Bash(git branch -M main)",
+      "Bash(git push -u origin main)"
     ],
     "deny": []
   }
