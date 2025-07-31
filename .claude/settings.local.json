@@ -11,7 +11,10 @@
       "Bash(gh repo create slink --public --description \"基于Cloudflare Pages和Functions的短链生成服务\" --source=. --push)",
       "Bash(git remote add origin https://github.com/niuniu2563/slink.git)",
       "Bash(git branch -M main)",
-      "Bash(git push -u origin main)"
+      "Bash(git push -u origin main)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nFix static resource 404 issues and improve deployment configuration\n\n- Update wrangler.toml with proper Pages configuration\n- Add local development server script (npm run serve)\n- Create comprehensive deployment guide (DEPLOYMENT.md)\n- Add troubleshooting steps for static resource loading\n- Include KV namespace setup instructions\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)",
+      "Bash(chmod +x /opt/codeserver/slink/setup-kv.sh)"
     ],
     "deny": []
   }

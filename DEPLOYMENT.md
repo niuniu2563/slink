@@ -27,28 +27,50 @@ npm run dev
 
 #### 步骤1：创建KV命名空间
 
+**方法A：使用Wrangler CLI（推荐）**
+
 ```bash
-# 安装wrangler CLI
+# 1. 安装wrangler CLI（如果未安装）
 npm install -g wrangler
 
-# 登录Cloudflare
+# 2. 登录Cloudflare
 wrangler login
 
-# 创建KV命名空间
+# 3. 创建KV命名空间
 wrangler kv:namespace create "SLINK_KV"
+# 输出示例: 🌀 Creating namespace with title "slink-SLINK_KV"
+# ✨ Success!
+# Add the following to your configuration file in your kv_namespaces array:
+# { binding = "SLINK_KV", id = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6" }
+
 wrangler kv:namespace create "SLINK_KV" --preview
+# 输出示例: 🌀 Creating namespace with title "slink-SLINK_KV_preview"
+# ✨ Success!
+# Add the following to your configuration file in your kv_namespaces array:
+# { binding = "SLINK_KV", preview_id = "z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4" }
 ```
+
+**方法B：通过Cloudflare Dashboard**
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. 进入 "Workers & Pages" → "KV"
+3. 点击 "Create a namespace"
+4. 名称：`SLINK_KV`
+5. 记录创建后显示的命名空间ID
 
 #### 步骤2：更新wrangler.toml
 
-将命令输出的KV命名空间ID替换到 `wrangler.toml` 中：
+在 `wrangler.toml` 文件中，取消注释KV配置部分并替换为实际的ID：
 
 ```toml
+# 取消注释并替换为你的实际ID
 [[kv_namespaces]]
 binding = "SLINK_KV"
-id = "你的KV命名空间ID"
-preview_id = "你的预览KV命名空间ID"
+id = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"  # 替换为你的生产KV命名空间ID
+preview_id = "z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4"  # 替换为你的预览KV命名空间ID
 ```
+
+**重要：** 你也可以运行 `./setup-kv.sh` 脚本查看详细设置步骤。
 
 #### 步骤3：部署到Cloudflare Pages
 
