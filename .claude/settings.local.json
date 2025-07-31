@@ -18,7 +18,17 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nFix KV namespace configuration for Cloudflare Pages deployment\n\n- Remove invalid placeholder KV namespace IDs from wrangler.toml\n- Add comprehensive KV setup guide with CLI and Dashboard methods\n- Create setup-kv.sh script for easy KV namespace configuration\n- Update DEPLOYMENT.md with detailed KV configuration steps\n- Provide clear instructions for both production and preview namespaces\n\nThis fixes the deployment error: \"Invalid KV namespace ID\"\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(ls -la /opt/codeserver/slink/public/)",
       "Bash(rm /opt/codeserver/slink/_compatability_date.txt)",
-      "Bash(rm /opt/codeserver/slink/public/_routes.json)"
+      "Bash(rm /opt/codeserver/slink/public/_routes.json)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nFix static resource 404 issues with comprehensive solutions\n\n- Add inline version (index-inline.html) as fallback for static resource issues\n- Remove potentially problematic _routes.json configuration\n- Update DEPLOYMENT.md with detailed Cloudflare Pages build configuration\n- Add specific instructions for KV namespace binding in Pages dashboard\n- Provide troubleshooting steps for static file 404 errors\n\nThe main issue is likely Cloudflare Pages build configuration in the dashboard.\nUsers should ensure:\n- Build command is empty\n- Build output directory is \"public\"\n- Root directory is empty\n- KV namespace is properly bound in Functions settings\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(mkdir -p assets)",
+      "Bash(mv public/style.css assets/)",
+      "Bash(mv public/script.js assets/)",
+      "Bash(mv public/index.html .)",
+      "Bash(mv public/index-inline.html .)",
+      "Bash(mv functions/api/* functions/)",
+      "Bash(rmdir functions/api)",
+      "Bash(rmdir public)",
+      "Bash(rm README.md DEPLOYMENT.md setup-kv.sh package.json)"
     ],
     "deny": []
   }
