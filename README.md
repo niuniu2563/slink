@@ -13,37 +13,40 @@
 
 ## 🚀 部署指南
 
-### 1. 创建 Cloudflare Pages 项目
+### 1. 创建 KV 命名空间
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. 进入 **Workers & Pages** → **KV**
+3. 点击 **Create a namespace**
+4. 命名空间名称输入: `SLINK_KV`
+5. 点击 **Add** 创建
+6. 复制生成的命名空间 ID
+
+### 2. 配置项目
 
 1. Fork 这个仓库到您的 GitHub 账户
-2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-3. 进入 **Pages** → **Create a project**
-4. 连接您的 GitHub 仓库
-5. 选择 `slink` 仓库
-6. 配置构建设置：
+2. 修改 `wrangler.toml` 文件中的 KV 命名空间 ID：
+   ```toml
+   [[kv_namespaces]]
+   binding = "SLINK_KV"
+   id = "YOUR_KV_NAMESPACE_ID"  # 替换为您的实际 ID
+   ```
+3. 提交并推送更改
+
+### 3. 部署到 Cloudflare Pages
+
+1. 在 Cloudflare Dashboard 中，进入 **Pages** → **Create a project**
+2. 连接您的 GitHub 仓库
+3. 选择 `slink` 仓库
+4. 配置构建设置：
    - **Build command**: 留空
    - **Build output directory**: `.`
    - **Root directory**: 留空
+5. 点击 **Save and Deploy**
 
-### 2. 创建 KV 命名空间
+### 4. 验证部署
 
-1. 在 Cloudflare Dashboard 中，进入 **Workers & Pages** → **KV**
-2. 点击 **Create a namespace**
-3. 命名空间名称输入: `SLINK_KV`
-4. 点击 **Add** 创建
-
-### 3. 绑定 KV 命名空间到 Pages 项目
-
-1. 进入您的 Pages 项目页面
-2. 点击 **Settings** → **Functions**
-3. 在 **KV namespace bindings** 部分：
-   - **Variable name**: `SLINK_KV`
-   - **KV namespace**: 选择刚创建的 `SLINK_KV`
-4. 点击 **Save**
-
-### 4. 重新部署
-
-返回 **Deployments** 页面，点击 **Retry deployment** 或推送新的代码提交来触发重新部署。
+部署完成后，访问您的 Pages 域名即可使用短链服务。
 
 ## 📁 项目结构
 
