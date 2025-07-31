@@ -31,7 +31,8 @@
       "Bash(rm README.md DEPLOYMENT.md setup-kv.sh package.json)",
       "Bash(git commit -m \"Restructure project: move HTML to root, assets to assets/, clean up unnecessary files\")",
       "Bash(git commit -m \"Fix 500 error: add KV check and fallback simple mode\")",
-      "Bash(rm /opt/codeserver/slink/functions/shorten-simple.js)"
+      "Bash(rm /opt/codeserver/slink/functions/shorten-simple.js)",
+      "Bash(git commit -m \"Enable KV binding in wrangler.toml, restore normal shorten API\")"
     ],
     "deny": []
   }
