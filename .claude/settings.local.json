@@ -34,7 +34,10 @@
       "Bash(rm /opt/codeserver/slink/functions/shorten-simple.js)",
       "Bash(git commit -m \"Enable KV binding in wrangler.toml, restore normal shorten API\")",
       "Bash(git commit -m \"Update KV binding to use correct SLINK_KV with actual namespace ID\")",
-      "Bash(rm index-inline.html)"
+      "Bash(rm index-inline.html)",
+      "Bash(git commit -m \"Clean up and optimize code: remove unused files, simplify functions, reduce redundancy\")",
+      "Bash(mv /opt/codeserver/slink/functions/index.js /opt/codeserver/slink/functions/core.js)",
+      "Bash(rm /opt/codeserver/slink/functions/shorten.js /opt/codeserver/slink/functions/stats.js /opt/codeserver/slink/functions/[slug].js)"
     ],
     "deny": []
   }
