@@ -13,12 +13,113 @@ class SLink {
         this.copyBtn = document.getElementById('copyBtn');
         this.error = document.getElementById('error');
 
+        // 便签功能元素
+        this.noteForm = document.getElementById('noteForm');
+        this.noteTitle = document.getElementById('noteTitle');
+        this.noteContent = document.getElementById('noteContent');
+        this.noteBtn = document.getElementById('noteBtn');
+        
+        // 选项卡元素
+        this.tabBtns = document.querySelectorAll('.tab-btn');
+        this.tabContents = document.querySelectorAll('.tab-content');
+
         this.init();
     }
 
     init() {
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
         this.copyBtn.addEventListener('click', this.copyToClipboard.bind(this));
+        
+        // 便签功能事件监听
+        this.noteForm.addEventListener('submit', this.handleNoteSubmit.bind(this));
+        
+        // 选项卡切换事件监听
+        this.tabBtns.forEach(btn => {
+            btn.addEventListener('click', this.switchTab.bind(this));
+        });
+    }
+
+    switchTab(e) {
+        const targetTab = e.target.dataset.tab;
+        
+        // 更新选项卡按钮状态
+        this.tabBtns.forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // 更新选项卡内容
+        this.tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(`${targetTab}-tab`).classList.add('active');
+        
+        // 隐藏结果和错误
+        this.hideResult();
+        this.hideError();
+    }
+
+    async handleNoteSubmit(e) {
+        e.preventDefault();
+        
+        const title = this.noteTitle.value.trim();
+        const content = this.noteContent.value.trim();
+
+        if (!content) {
+            this.showError('便签内容不能为空');
+            return;
+        }
+
+        this.setNoteLoading(true);
+        this.hideError();
+        this.hideResult();
+
+        try {
+            const response = await fetch('/note', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: title,
+                    content: content
+                })
+            });
+
+            const responseText = await response.text();
+            if (!responseText) {
+                throw new Error('服务器响应为空');
+            }
+
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error('服务器响应格式错误');
+            }
+
+            if (!response.ok) {
+                throw new Error(data.error || '创建便签失败');
+            }
+
+            this.showNoteResult(data);
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.setNoteLoading(false);
+        }
+    }
+
+    setNoteLoading(loading) {
+        this.noteBtn.disabled = loading;
+        const btnText = this.noteBtn.querySelector('.btn-text');
+        const loadingText = this.noteBtn.querySelector('.loading');
+        btnText.style.display = loading ? 'none' : 'inline';
+        loadingText.style.display = loading ? 'inline' : 'none';
+    }
+
+    showNoteResult(data) {
+        this.shortUrl.value = `${window.location.origin}/${data.slug}`;
+        this.originalUrlDisplay.textContent = data.title || '便签预览';
+        this.createdTime.textContent = new Date(data.createdAt).toLocaleString('zh-CN');
+        this.result.style.display = 'block';
+        this.result.scrollIntoView({ behavior: 'smooth' });
     }
 
     async handleSubmit(e) {

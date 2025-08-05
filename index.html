@@ -13,27 +13,59 @@
         </header>
 
         <main>
-            <form id="shortenForm" class="shorten-form" novalidate>
-                <div class="input-group">
-                    <input 
-                        type="url" 
-                        id="originalUrl" 
-                        placeholder="输入要缩短的网址..." 
-                        required
-                    >
-                    <input 
-                        type="text" 
-                        id="customSlug" 
-                        placeholder="自定义短码 (可选)"
-                        pattern="[a-zA-Z0-9_-]+"
-                        title="只能包含字母、数字、下划线和连字符"
-                    >
-                    <button type="submit" id="shortenBtn">
-                        <span class="btn-text">生成短链</span>
-                        <span class="loading" style="display: none;">生成中...</span>
-                    </button>
-                </div>
-            </form>
+            <!-- 选项卡导航 -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="shorten">🔗 短链</button>
+                <button class="tab-btn" data-tab="note">📝 便签</button>
+            </div>
+
+            <!-- 短链表单 -->
+            <div id="shorten-tab" class="tab-content active">
+                <form id="shortenForm" class="shorten-form" novalidate>
+                    <div class="input-group">
+                        <input 
+                            type="url" 
+                            id="originalUrl" 
+                            placeholder="输入要缩短的网址..." 
+                            required
+                        >
+                        <input 
+                            type="text" 
+                            id="customSlug" 
+                            placeholder="自定义短码 (可选)"
+                            pattern="[a-zA-Z0-9_-]+"
+                            title="只能包含字母、数字、下划线和连字符"
+                        >
+                        <button type="submit" id="shortenBtn">
+                            <span class="btn-text">生成短链</span>
+                            <span class="loading" style="display: none;">生成中...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 便签表单 -->
+            <div id="note-tab" class="tab-content">
+                <form id="noteForm" class="note-form" novalidate>
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="noteTitle" 
+                            placeholder="便签标题 (可选)"
+                        >
+                        <textarea 
+                            id="noteContent" 
+                            placeholder="支持 Markdown 格式&#10;&#10;例如：&#10;# 标题&#10;**粗体文字**&#10;- 列表项" 
+                            rows="8"
+                            required
+                        ></textarea>
+                        <button type="submit" id="noteBtn">
+                            <span class="btn-text">创建便签</span>
+                            <span class="loading" style="display: none;">创建中...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
 
             <div id="result" class="result" style="display: none;">
                 <div class="result-item">
