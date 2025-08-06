@@ -126,6 +126,105 @@ function generateNoteHTML(noteData) {
             color: var(--text);
             font-size: 16px;
             margin-bottom: 32px;
+            word-wrap: break-word;
+        }
+        
+        /* Markdown样式 */
+        .note-content h1, .note-content h2, .note-content h3 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--text);
+        }
+        
+        .note-content h1 {
+            font-size: 1.875rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+        
+        .note-content h2 {
+            font-size: 1.5rem;
+        }
+        
+        .note-content h3 {
+            font-size: 1.25rem;
+        }
+        
+        .note-content p {
+            margin-bottom: 16px;
+        }
+        
+        .note-content strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .note-content em {
+            font-style: italic;
+        }
+        
+        .note-content code {
+            background: var(--code-bg, #f3f4f6);
+            color: var(--code-text, #1f2937);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875em;
+        }
+        
+        .note-content pre {
+            background: var(--code-bg, #f3f4f6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        
+        .note-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--code-text, #1f2937);
+            font-size: 14px;
+        }
+        
+        .note-content ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+        
+        .note-content li {
+            margin-bottom: 8px;
+        }
+        
+        .note-content blockquote {
+            border-left: 4px solid var(--primary);
+            background: var(--quote-bg, #f9fafb);
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-radius: 0 8px 8px 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .note-content hr {
+            border: none;
+            border-top: 2px solid var(--border);
+            margin: 32px 0;
+            border-radius: 2px;
+        }
+        
+        .note-content a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom-color 0.2s ease;
+        }
+        
+        .note-content a:hover {
+            border-bottom-color: var(--primary);
         }
         
         .note-actions {
@@ -318,10 +417,10 @@ function generateNoteHTML(noteData) {
             </div>
         </div>
         
-        <div class="note-content" id="noteContent">${escapeHtml(content)}</div>
+        <div class="note-content" id="noteContent">${renderMarkdownContent(content)}</div>
         
         <div class="note-actions">
-            <button class="action-btn" onclick="copyContent()">
+            <button class="action-btn" onclick="copyOriginalContent()">
                 📋 复制内容
             </button>
             <button class="action-btn secondary" onclick="copyUrl()">
@@ -338,80 +437,51 @@ function generateNoteHTML(noteData) {
     </div>
     
     <script>
-        // 修复的 Markdown 渲染
-        function renderMarkdown(text) {
-            // 先处理双换行为段落分隔
-            text = text.replace(/\n\n+/g, '</p><p>');
-            
-            // 标题（必须在段落处理之前）
-            text = text.replace(/^### (.*$)/gm, '</p><h3>$1</h3><p>');
-            text = text.replace(/^## (.*$)/gm, '</p><h2>$1</h2><p>');
-            text = text.replace(/^# (.*$)/gm, '</p><h1>$1</h1><p>');
-            
-            // 粗体
-            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            
-            // 斜体（确保不与粗体冲突）
-            text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-            
-            // 列表项
-            text = text.replace(/^- (.+$)/gm, '</p><ul><li>$1</li></ul><p>');
-            
-            // 链接 [text](url)
-            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-            
-            // 单换行转为 <br>
-            text = text.replace(/\n/g, '<br>');
-            
-            // 包装在段落中并清理空段落
-            text = '<p>' + text + '</p>';
-            text = text.replace(/<p><\/p>/g, '');
-            text = text.replace(/<p>(<h[1-6])/g, '$1');
-            text = text.replace(/(<\/h[1-6]>)<p>/g, '$1');
-            text = text.replace(/<p>(<ul)/g, '$1');
-            text = text.replace(/(<\/ul>)<p>/g, '$1');
-            
-            return text;
+        // 原始内容存储（用于复制）
+        const originalContent = `${content.replace(/`/g, '\`').replace(/\\/g, '\\\\')}`;
+        
+        // 复制原始内容功能
+        function copyOriginalContent() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(originalContent).then(() => {
+                    showCopyNotification('✅ 内容已复制到剪贴板');
+                }).catch(() => {
+                    fallbackCopy(originalContent, '✅ 内容已复制到剪贴板');
+                });
+            } else {
+                fallbackCopy(originalContent, '✅ 内容已复制到剪贴板');
+            }
         }
         
-        // 渲染内容
-        const contentEl = document.getElementById('noteContent');
-        contentEl.innerHTML = renderMarkdown(contentEl.textContent);
-        
-        // 复制内容功能
-        function copyContent() {
-            const contentEl = document.getElementById('noteContent');
-            const text = contentEl.textContent || contentEl.innerText;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyNotification('✅ 内容已复制到剪贴板');
-            }).catch(() => {
-                // 降级方案
+        // 降级复制方案
+        function fallbackCopy(text, message) {
+            try {
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showCopyNotification('✅ 内容已复制到剪贴板');
-            });
+                showCopyNotification(message);
+            } catch (e) {
+                showCopyNotification('❌ 复制失败，请手动选择复制');
+            }
         }
         
         // 复制URL功能
         function copyUrl() {
             const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                showCopyNotification('✅ 链接已复制到剪贴板');
-            }).catch(() => {
-                // 降级方案
-                const textArea = document.createElement('textarea');
-                textArea.value = url;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                showCopyNotification('✅ 链接已复制到剪贴板');
-            });
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showCopyNotification('✅ 链接已复制到剪贴板');
+                }).catch(() => {
+                    fallbackCopy(url, '✅ 链接已复制到剪贴板');
+                });
+            } else {
+                fallbackCopy(url, '✅ 链接已复制到剪贴板');
+            }
         }
         
         function showCopyNotification(message) {
@@ -436,4 +506,66 @@ function escapeHtml(text) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+function renderMarkdownContent(text) {
+    if (!text) return '';
+    
+    // 先转义HTML特殊字符
+    let html = escapeHtml(text);
+    
+    // 处理代码块（必须在其他处理之前）
+    html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+    
+    // 处理单行代码
+    html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+    
+    // 处理标题
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    
+    // 处理粗体
+    html = html.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+    
+    // 处理斜体
+    html = html.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+    
+    // 处理链接
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    
+    // 处理列表项
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    
+    // 将连续的列表项包装在ul中
+    html = html.replace(/((?:<li>.*<\/li>\s*)+)/g, '<ul>$1</ul>');
+    
+    // 处理引用
+    html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+    
+    // 处理分隔线
+    html = html.replace(/^---$/gm, '<hr>');
+    
+    // 处理段落（将双换行转换为段落分隔）
+    html = html.replace(/\n\n+/g, '</p><p>');
+    
+    // 将单换行转换为<br>
+    html = html.replace(/\n/g, '<br>');
+    
+    // 包装在段落中
+    html = '<p>' + html + '</p>';
+    
+    // 清理多余的空段落和修复结构
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p>(<h[1-6])/g, '$1');
+    html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<ul)/g, '$1');
+    html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<blockquote)/g, '$1');
+    html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<pre)/g, '$1');
+    html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
+    
+    return html;
 }
