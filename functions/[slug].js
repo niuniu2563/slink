@@ -446,14 +446,15 @@ function generateNoteHTML(noteData) {
     
     <script>
         // 原始内容存储（用于复制）
-        const originalContent = '${content.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}';
+        const originalContent = ${JSON.stringify(content)};
         
         // 复制原始内容功能
         function copyOriginalContent() {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(originalContent).then(() => {
                     showCopyNotification('✅ 内容已复制到剪贴板');
-                }).catch(() => {
+                }).catch(err => {
+                    console.error('Clipboard write failed:', err);
                     fallbackCopy(originalContent, '✅ 内容已复制到剪贴板');
                 });
             } else {
@@ -467,13 +468,27 @@ function generateNoteHTML(noteData) {
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
                 textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                textArea.style.top = '-9999px';
                 textArea.style.opacity = '0';
+                textArea.setAttribute('readonly', '');
                 document.body.appendChild(textArea);
+                
+                // 选择文本
                 textArea.select();
-                document.execCommand('copy');
+                textArea.setSelectionRange(0, text.length);
+                
+                // 执行复制
+                const success = document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showCopyNotification(message);
+                
+                if (success) {
+                    showCopyNotification(message);
+                } else {
+                    showCopyNotification('❌ 复制失败，请手动选择复制');
+                }
             } catch (e) {
+                console.error('Fallback copy failed:', e);
                 showCopyNotification('❌ 复制失败，请手动选择复制');
             }
         }
@@ -484,7 +499,8 @@ function generateNoteHTML(noteData) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(() => {
                     showCopyNotification('✅ 链接已复制到剪贴板');
-                }).catch(() => {
+                }).catch(err => {
+                    console.error('URL copy failed:', err);
                     fallbackCopy(url, '✅ 链接已复制到剪贴板');
                 });
             } else {

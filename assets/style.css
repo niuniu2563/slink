@@ -132,6 +132,25 @@ main {
     min-height: 90px;
     line-height: 1.4;
     resize: vertical;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.input-group textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.input-group textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.input-group textarea::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+.input-group textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
 
 .input-group input:focus,
