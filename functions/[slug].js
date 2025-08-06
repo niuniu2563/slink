@@ -127,32 +127,42 @@ function generateNoteHTML(noteData) {
             font-size: 16px;
             margin-bottom: 24px;
             word-wrap: break-word;
+            text-align: justify;
         }
         
         /* Markdown样式 */
         .note-content h1, .note-content h2, .note-content h3 {
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
             font-weight: 600;
             line-height: 1.2;
             color: var(--text);
+            display: block;
         }
         
         .note-content h1 {
             font-size: 1.875rem;
             border-bottom: 2px solid var(--border);
-            padding-bottom: 0;
+            padding-bottom: 0 !important;
+            margin: 0 !important;
         }
         
         .note-content h2 {
             font-size: 1.5rem;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .note-content h3 {
             font-size: 1.25rem;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .note-content p {
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: justify;
         }
         
         .note-content strong {
