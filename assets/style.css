@@ -25,8 +25,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
-    line-height: 1.5;
+    padding: 16px;
+    line-height: 1.4;
     color: var(--text);
 }
 
@@ -37,11 +37,13 @@ body {
     max-width: 480px;
     width: 100%;
     border: 1px solid var(--border);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 header {
     text-align: center;
-    padding: 32px 32px 24px;
+    padding: 24px 24px 16px;
     border-bottom: 1px solid var(--border);
 }
 
@@ -60,7 +62,7 @@ header p {
 }
 
 main {
-    padding: 24px 32px 32px;
+    padding: 20px 24px 24px;
 }
 
 /* 选项卡样式 */
@@ -113,7 +115,7 @@ main {
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .input-group input,
@@ -129,8 +131,9 @@ main {
 }
 
 .input-group textarea {
-    min-height: 120px;
-    line-height: 1.5;
+    min-height: 100px;
+    line-height: 1.4;
+    resize: vertical;
 }
 
 .input-group input:focus,
@@ -172,13 +175,13 @@ main {
 .result {
     background: #f8fafc;
     border-radius: 12px;
-    padding: 20px;
+    padding: 16px;
     border: 1px solid var(--border);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .result-item {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .result-item:last-child {
