@@ -586,5 +586,10 @@ function renderMarkdownContent(text) {
     html = html.replace(/(<\/pre>)<\/p>/g, '$1');
     html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
     
+    // 清理标题后的空行
+    html = html.replace(/(<\/h[1-6]>)<br>/g, '$1');
+    html = html.replace(/(<\/h[1-6]>)<br><p>/g, '$1<p>');
+    html = html.replace(/(<\/h[1-6]>)<p><br>/g, '$1<p>');
+    
     return html;
 }
