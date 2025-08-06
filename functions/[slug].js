@@ -202,11 +202,14 @@ function generateNoteHTML(noteData) {
         .note-content ul {
             margin: 0 !important;
             padding-left: 20px !important;
+            line-height: 1 !important;
         }
         
         .note-content li {
             margin: 0 !important;
             padding: 0 !important;
+            line-height: 1 !important;
+            display: list-item !important;
         }
         
         .note-content blockquote {
@@ -323,11 +326,14 @@ function generateNoteHTML(noteData) {
         .note-content ul, .note-content ol {
             margin: 0 !important;
             padding-left: 20px !important;
+            line-height: 1 !important;
         }
         
         .note-content li {
             margin: 0 !important;
             padding: 0 !important;
+            line-height: 1 !important;
+            display: list-item !important;
         }
         
         .note-content blockquote {
@@ -567,6 +573,11 @@ function renderMarkdownContent(text) {
     // 将连续的列表项包装在ul中
     html = html.replace(/((?:<li>.*<\/li>\s*)+)/g, '<ul>$1</ul>');
     
+    // 清理列表内的空白字符
+    html = html.replace(/<ul>\s*(<li>)/g, '<ul>$1');
+    html = html.replace(/(<\/li>)\s*(<li>)/g, '$1$2');
+    html = html.replace(/(<li>[^<]*)<\/li>\s*<li>/g, '$1</li><li>');
+    
     // 处理引用
     html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
     
@@ -598,6 +609,19 @@ function renderMarkdownContent(text) {
     html = html.replace(/(<\/h[1-6]>)<br>/g, '$1');
     html = html.replace(/(<\/h[1-6]>)<br><p>/g, '$1<p>');
     html = html.replace(/(<\/h[1-6]>)<p><br>/g, '$1<p>');
+    
+    // 清理列表后的空行
+    html = html.replace(/(<\/ul>)<br>/g, '$1');
+    html = html.replace(/(<\/ul>)<br><p>/g, '$1<p>');
+    html = html.replace(/(<\/ul>)<p><br>/g, '$1<p>');
+    html = html.replace(/(<\/ol>)<br>/g, '$1');
+    html = html.replace(/(<\/ol>)<br><p>/g, '$1<p>');
+    html = html.replace(/(<\/ol>)<p><br>/g, '$1<p>');
+    
+    // 清理列表项内的空行
+    html = html.replace(/(<li>[^<]*)<br>(<\/li>)/g, '$1$2');
+    html = html.replace(/(<li>)<br>/g, '$1');
+    html = html.replace(/<br>(<\/li>)/g, '$1');
     
     return html;
 }
