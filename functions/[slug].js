@@ -335,39 +335,28 @@ function generateNoteHTML(noteData) {
     </div>
     
     <script>
-        // 改进的 Markdown 渲染
+        // 简化的 Markdown 渲染，避免转义问题
         function renderMarkdown(text) {
-            // 代码块（必须在单行代码之前）
-            var codeBlockRegex = new RegExp('```([^`]+)```', 'g');
-            text = text.replace(codeBlockRegex, '<pre><code>$1</code></pre>');
+            // 将换行符转换为 HTML
+            text = text.replace(/\n/g, '<br>');
+            
             // 标题
             text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
             text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
             text = text.replace(/^# (.*$)/gm, '<h1>$1</h1>');
-            // 粗体和斜体
-            var boldRegex = new RegExp('\\\\*\\\\*(.*?)\\\\*\\\\*', 'g');
-            var italicRegex = new RegExp('\\\\*(.*?)\\\\*', 'g');
-            text = text.replace(boldRegex, '<strong>$1</strong>');
-            text = text.replace(italicRegex, '<em>$1</em>');
-            // 单行代码
-            text = text.replace(/\`([^\`]+)\`/g, '<code>$1</code>');
-            // 链接
-            var linkRegex = new RegExp('\\\\[([^\\\\]]+)\\\\]\\\\(([^\\\\)]+)\\\\)', 'g');
-            text = text.replace(linkRegex, '<a href="$2" target="_blank">$1</a>');
+            
+            // 粗体
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // 斜体
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
             // 列表项
             text = text.replace(/^- (.+$)/gm, '<li>$1</li>');
-            // 包装连续的列表项
-            var listRegex = new RegExp('(<li>.*<\\\\/li>)', 'gs');
-            text = text.replace(listRegex, function(match) {
-                return '<ul>' + match + '</ul>';
-            });
-            // 引用
-            text = text.replace(/^> (.+$)/gm, '<blockquote><p>$1</p></blockquote>');
-            // 分隔线
-            text = text.replace(/^---$/gm, '<hr>');
-            // 段落（处理换行）
-            text = text.replace(/\\n\\n/g, '</p><p>');
-            text = text.replace(/^(?!<[h1-6ul]|<li|<blockquote|<hr|<pre)(.+)$/gm, '<p>$1</p>');
+            
+            // 链接 [text](url)
+            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
             return text;
         }
         
