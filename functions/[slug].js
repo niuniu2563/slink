@@ -338,22 +338,27 @@ function generateNoteHTML(noteData) {
         // 改进的 Markdown 渲染
         function renderMarkdown(text) {
             // 代码块（必须在单行代码之前）
-            text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            var codeBlockRegex = new RegExp('```([^`]+)```', 'g');
+            text = text.replace(codeBlockRegex, '<pre><code>$1</code></pre>');
             // 标题
             text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
             text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
             text = text.replace(/^# (.*$)/gm, '<h1>$1</h1>');
             // 粗体和斜体
-            text = text.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');
-            text = text.replace(/\\*(.*?)\\*/g, '<em>$1</em>');
+            var boldRegex = new RegExp('\\\\*\\\\*(.*?)\\\\*\\\\*', 'g');
+            var italicRegex = new RegExp('\\\\*(.*?)\\\\*', 'g');
+            text = text.replace(boldRegex, '<strong>$1</strong>');
+            text = text.replace(italicRegex, '<em>$1</em>');
             // 单行代码
             text = text.replace(/\`([^\`]+)\`/g, '<code>$1</code>');
             // 链接
-            text = text.replace(/\\[([^\\]]+)\\]\\(([^\\)]+)\\)/g, '<a href="$2" target="_blank">$1</a>');
+            var linkRegex = new RegExp('\\\\[([^\\\\]]+)\\\\]\\\\(([^\\\\)]+)\\\\)', 'g');
+            text = text.replace(linkRegex, '<a href="$2" target="_blank">$1</a>');
             // 列表项
             text = text.replace(/^- (.+$)/gm, '<li>$1</li>');
             // 包装连续的列表项
-            text = text.replace(/(<li>.*<\\/li>)/gs, function(match) {
+            var listRegex = new RegExp('(<li>.*<\\\\/li>)', 'gs');
+            text = text.replace(listRegex, function(match) {
                 return '<ul>' + match + '</ul>';
             });
             // 引用
