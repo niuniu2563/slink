@@ -438,7 +438,7 @@ function generateNoteHTML(noteData) {
     
     <script>
         // 原始内容存储（用于复制）
-        const originalContent = `${content.replace(/`/g, '\`').replace(/\\/g, '\\\\')}`;
+        const originalContent = '${content.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}';
         
         // 复制原始内容功能
         function copyOriginalContent() {
