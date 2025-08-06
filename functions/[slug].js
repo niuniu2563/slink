@@ -131,10 +131,10 @@ function generateNoteHTML(noteData) {
         
         /* Markdown样式 */
         .note-content h1, .note-content h2, .note-content h3 {
-            margin-top: 20px;
-            margin-bottom: 12px;
+            margin-top: 16px;
+            margin-bottom: 8px;
             font-weight: 600;
-            line-height: 1.3;
+            line-height: 1.2;
             color: var(--text);
         }
         
