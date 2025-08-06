@@ -132,12 +132,12 @@ main {
     min-height: 90px;
     line-height: 1.4;
     resize: none;
-    scrollbar-width: none;
+    scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 .input-group textarea::-webkit-scrollbar {
-    width: 0px;
+    width: 8px;
     background: transparent;
 }
 
@@ -146,26 +146,18 @@ main {
 }
 
 .input-group textarea::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 0px;
-}
-
-.input-group textarea::-webkit-scrollbar-thumb:hover {
-    background: transparent;
-}
-
-/* Safari风格的覆盖滚动条，只在悬停和滚动时显示 */
-.input-group textarea:hover::-webkit-scrollbar {
-    width: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .input-group textarea:hover::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
+    opacity: 1;
 }
 
-.input-group textarea:hover::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+.input-group textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .input-group input:focus,

@@ -131,8 +131,8 @@ function generateNoteHTML(noteData) {
         
         /* Markdown样式 */
         .note-content h1, .note-content h2, .note-content h3 {
-            margin-top: 16px;
-            margin-bottom: 8px;
+            margin-top: 8px;
+            margin-bottom: 4px;
             font-weight: 600;
             line-height: 1.2;
             color: var(--text);
@@ -157,7 +157,7 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content p {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .note-content p:last-child {
@@ -185,10 +185,10 @@ function generateNoteHTML(noteData) {
         .note-content pre {
             background: var(--code-bg, #f3f4f6);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 8px;
             overflow-x: auto;
-            margin: 12px 0;
+            margin: 8px 0;
         }
         
         .note-content pre code {
@@ -199,20 +199,20 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content ul {
-            margin: 12px 0;
-            padding-left: 24px;
+            margin: 8px 0;
+            padding-left: 20px;
         }
         
         .note-content li {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         
         .note-content blockquote {
             border-left: 4px solid var(--primary);
             background: var(--quote-bg, #f9fafb);
-            margin: 12px 0;
-            padding: 10px 16px;
-            border-radius: 0 8px 8px 0;
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 0 6px 6px 0;
             color: var(--text-muted);
             font-style: italic;
         }
@@ -220,7 +220,7 @@ function generateNoteHTML(noteData) {
         .note-content hr {
             border: none;
             border-top: 2px solid var(--border);
-            margin: 24px 0;
+            margin: 16px 0;
             border-radius: 2px;
         }
         
