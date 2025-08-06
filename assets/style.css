@@ -126,6 +126,7 @@ main {
     background: var(--card);
     transition: all 0.2s ease;
     resize: vertical;
+    text-align: justify;
 }
 
 .input-group textarea {

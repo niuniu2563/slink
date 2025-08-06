@@ -200,12 +200,13 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content ul {
-            margin: 0;
-            padding-left: 20px;
+            margin: 0 !important;
+            padding-left: 20px !important;
         }
         
         .note-content li {
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .note-content blockquote {
@@ -320,12 +321,13 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content ul, .note-content ol {
-            margin: 16px 0;
-            padding-left: 32px;
+            margin: 0 !important;
+            padding-left: 20px !important;
         }
         
         .note-content li {
-            margin: 8px 0;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .note-content blockquote {
