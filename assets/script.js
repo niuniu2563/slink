@@ -116,7 +116,14 @@ class SLink {
 
     showNoteResult(data) {
         this.shortUrl.value = `${window.location.origin}/${data.slug}`;
-        this.originalUrlDisplay.textContent = data.title || '便签预览';
+        
+        // 更新标签和内容
+        const resultLabel = document.getElementById('result-label');
+        const originalResult = document.getElementById('original-result');
+        
+        resultLabel.textContent = '便签地址:';
+        originalResult.style.display = 'none'; // 隐藏原始地址显示
+        
         this.createdTime.textContent = new Date(data.createdAt).toLocaleString('zh-CN');
         this.result.style.display = 'block';
         this.result.scrollIntoView({ behavior: 'smooth' });
@@ -202,6 +209,14 @@ class SLink {
 
     showResult(data) {
         this.shortUrl.value = `${window.location.origin}/${data.slug}`;
+        
+        // 更新标签和内容
+        const resultLabel = document.getElementById('result-label');
+        const originalResult = document.getElementById('original-result');
+        
+        resultLabel.textContent = '短链地址:';
+        originalResult.style.display = 'block'; // 显示原始地址
+        
         this.originalUrlDisplay.textContent = data.originalUrl;
         this.createdTime.textContent = new Date(data.createdAt).toLocaleString('zh-CN');
         this.result.style.display = 'block';
