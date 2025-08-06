@@ -337,33 +337,33 @@ function generateNoteHTML(noteData) {
     <script>
         // 改进的 Markdown 渲染
         function renderMarkdown(text) {
-            return text
-                // 代码块（必须在单行代码之前）
-                .replace(/```([\\s\\S]*?)```/g, '<pre><code>$1</code></pre>')
-                // 标题
-                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-                // 粗体和斜体
-                .replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')
-                .replace(/\\*(.*?)\\*/g, '<em>$1</em>')
-                // 单行代码
-                .replace(/\`([^\`]+)\`/g, '<code>$1</code>')
-                // 链接
-                .replace(/\\[([^\\]]+)\\]\\(([^\\)]+)\\)/g, '<a href="$2" target="_blank">$1</a>')
-                // 列表项
-                .replace(/^- (.+$)/gm, '<li>$1</li>')
-                // 包装连续的列表项
-                .replace(/(<li>.*<\\/li>)/gs, function(match) {
-                    return '<ul>' + match + '</ul>';
-                })
-                // 引用
-                .replace(/^> (.+$)/gm, '<blockquote><p>$1</p></blockquote>')
-                // 分隔线
-                .replace(/^---$/gm, '<hr>')
-                // 段落（处理换行）
-                .replace(/\\n\\n/g, '</p><p>')
-                .replace(/^(?!<[h1-6ul]|<li|<blockquote|<hr|<pre)(.+)$/gm, '<p>$1</p>');
+            // 代码块（必须在单行代码之前）
+            text = text.replace(/```([\\s\\S]*?)```/g, '<pre><code>$1</code></pre>');
+            // 标题
+            text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            text = text.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            // 粗体和斜体
+            text = text.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');
+            text = text.replace(/\\*(.*?)\\*/g, '<em>$1</em>');
+            // 单行代码
+            text = text.replace(/\`([^\`]+)\`/g, '<code>$1</code>');
+            // 链接
+            text = text.replace(/\\[([^\\]]+)\\]\\(([^\\)]+)\\)/g, '<a href="$2" target="_blank">$1</a>');
+            // 列表项
+            text = text.replace(/^- (.+$)/gm, '<li>$1</li>');
+            // 包装连续的列表项
+            text = text.replace(/(<li>.*<\\/li>)/gs, function(match) {
+                return '<ul>' + match + '</ul>';
+            });
+            // 引用
+            text = text.replace(/^> (.+$)/gm, '<blockquote><p>$1</p></blockquote>');
+            // 分隔线
+            text = text.replace(/^---$/gm, '<hr>');
+            // 段落（处理换行）
+            text = text.replace(/\\n\\n/g, '</p><p>');
+            text = text.replace(/^(?!<[h1-6ul]|<li|<blockquote|<hr|<pre)(.+)$/gm, '<p>$1</p>');
+            return text;
         }
         
         // 渲染内容
