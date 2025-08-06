@@ -321,8 +321,11 @@ function generateNoteHTML(noteData) {
         <div class="note-content" id="noteContent">${escapeHtml(content)}</div>
         
         <div class="note-actions">
-            <button class="action-btn" onclick="copyUrl()">
-                📋 复制链接
+            <button class="action-btn" onclick="copyContent()">
+                📋 复制内容
+            </button>
+            <button class="action-btn secondary" onclick="copyUrl()">
+                🔗 复制链接
             </button>
             <a href="/" class="action-btn secondary">
                 📝 创建新便签
@@ -331,31 +334,42 @@ function generateNoteHTML(noteData) {
     </div>
     
     <div id="copyNotification" class="copy-notification">
-        ✅ 链接已复制到剪贴板
+        ✅ 已复制到剪贴板
     </div>
     
     <script>
-        // 简化的 Markdown 渲染，避免转义问题
+        // 修复的 Markdown 渲染
         function renderMarkdown(text) {
-            // 将换行符转换为 HTML
-            text = text.replace(/\n/g, '<br>');
+            // 先处理双换行为段落分隔
+            text = text.replace(/\n\n+/g, '</p><p>');
             
-            // 标题
-            text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
-            text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
-            text = text.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            // 标题（必须在段落处理之前）
+            text = text.replace(/^### (.*$)/gm, '</p><h3>$1</h3><p>');
+            text = text.replace(/^## (.*$)/gm, '</p><h2>$1</h2><p>');
+            text = text.replace(/^# (.*$)/gm, '</p><h1>$1</h1><p>');
             
             // 粗体
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             
-            // 斜体
-            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // 斜体（确保不与粗体冲突）
+            text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
             
             // 列表项
-            text = text.replace(/^- (.+$)/gm, '<li>$1</li>');
+            text = text.replace(/^- (.+$)/gm, '</p><ul><li>$1</li></ul><p>');
             
             // 链接 [text](url)
             text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
+            // 单换行转为 <br>
+            text = text.replace(/\n/g, '<br>');
+            
+            // 包装在段落中并清理空段落
+            text = '<p>' + text + '</p>';
+            text = text.replace(/<p><\/p>/g, '');
+            text = text.replace(/<p>(<h[1-6])/g, '$1');
+            text = text.replace(/(<\/h[1-6]>)<p>/g, '$1');
+            text = text.replace(/<p>(<ul)/g, '$1');
+            text = text.replace(/(<\/ul>)<p>/g, '$1');
             
             return text;
         }
@@ -364,11 +378,30 @@ function generateNoteHTML(noteData) {
         const contentEl = document.getElementById('noteContent');
         contentEl.innerHTML = renderMarkdown(contentEl.textContent);
         
+        // 复制内容功能
+        function copyContent() {
+            const contentEl = document.getElementById('noteContent');
+            const text = contentEl.textContent || contentEl.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyNotification('✅ 内容已复制到剪贴板');
+            }).catch(() => {
+                // 降级方案
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopyNotification('✅ 内容已复制到剪贴板');
+            });
+        }
+        
         // 复制URL功能
         function copyUrl() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
-                showCopyNotification();
+                showCopyNotification('✅ 链接已复制到剪贴板');
             }).catch(() => {
                 // 降级方案
                 const textArea = document.createElement('textarea');
@@ -377,12 +410,15 @@ function generateNoteHTML(noteData) {
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showCopyNotification();
+                showCopyNotification('✅ 链接已复制到剪贴板');
             });
         }
         
-        function showCopyNotification() {
+        function showCopyNotification(message) {
             const notification = document.getElementById('copyNotification');
+            if (message) {
+                notification.textContent = message;
+            }
             notification.classList.add('show');
             setTimeout(() => {
                 notification.classList.remove('show');
