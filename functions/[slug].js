@@ -338,7 +338,7 @@ function generateNoteHTML(noteData) {
         // 改进的 Markdown 渲染
         function renderMarkdown(text) {
             // 代码块（必须在单行代码之前）
-            text = text.replace(/```([\\s\\S]*?)```/g, '<pre><code>$1</code></pre>');
+            text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
             // 标题
             text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
             text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
