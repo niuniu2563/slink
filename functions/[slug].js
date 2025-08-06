@@ -140,7 +140,7 @@ function generateNoteHTML(noteData) {
         .note-content h1 {
             font-size: 1.875rem;
             border-bottom: 2px solid var(--border);
-            padding-bottom: 8px;
+            padding-bottom: 0;
         }
         
         .note-content h2 {
@@ -152,11 +152,7 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content p {
-            margin-bottom: 8px;
-        }
-        
-        .note-content p:last-child {
-            margin-bottom: 0;
+            margin: 0;
         }
         
         .note-content strong {
@@ -183,7 +179,7 @@ function generateNoteHTML(noteData) {
             border-radius: 6px;
             padding: 8px;
             overflow-x: auto;
-            margin: 8px 0;
+            margin: 0;
         }
         
         .note-content pre code {
@@ -194,18 +190,18 @@ function generateNoteHTML(noteData) {
         }
         
         .note-content ul {
-            margin: 8px 0;
+            margin: 0;
             padding-left: 20px;
         }
         
         .note-content li {
-            margin-bottom: 4px;
+            margin: 0;
         }
         
         .note-content blockquote {
             border-left: 4px solid var(--primary);
             background: var(--quote-bg, #f9fafb);
-            margin: 8px 0;
+            margin: 0;
             padding: 8px 12px;
             border-radius: 0 6px 6px 0;
             color: var(--text-muted);
@@ -215,7 +211,7 @@ function generateNoteHTML(noteData) {
         .note-content hr {
             border: none;
             border-top: 2px solid var(--border);
-            margin: 16px 0;
+            margin: 0;
             border-radius: 2px;
         }
         
